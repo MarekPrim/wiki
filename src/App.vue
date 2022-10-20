@@ -3,6 +3,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import HelloWorld from './components/HelloWorld.vue'
 import Image from './components/Image.vue';
+import Page from './components/Page.vue';
 </script>
 
 <template>
@@ -16,6 +17,7 @@ import Image from './components/Image.vue';
   </div>
   <HelloWorld msg="Vite + Vue" />
   <Image img="u/src/assets/nasa.jpg"/>
+  <Page img="fsdfs"/>
 </template>
 
 <style scoped>
