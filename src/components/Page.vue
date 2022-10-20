@@ -1,29 +1,35 @@
 <script setup>
-import {onMounted, ref} from 'vue'
-
-defineProps({
-  img: String
-})
-
-onMounted(() => {
-  alert("Image mounted");
-})
-
+import { useRoute } from 'vue-router';
+import Markdown from './Markdown.vue';
+// import Markdown from "./Markdown.vue"
+const route = useRoute();
+const name = route.params.name;
 </script>
 
 <template>
-
-
-      <div v-if="img.startsWith('i')">
-         <p>Contenu de page wiki yadayada{{img}}</p>
-      </div>
-      <div v-else>
-         <p>Cette page n'existe pas, il faut la créer</p>
-      </div>
-
+  <article class="bg-slate-50" id="view">
+    <div class="article">
+      <Markdown :html="name" />
+    </div>
+  </article>
 </template>
 <style scoped>
-.image:hover{
-    filter: drop-shadow(0 0 2em #646cffaa);
+#view {
+  width: 75vw;
+  height: 80vh;
+  margin: auto;
+  padding: 1em;
+  background-color: #f5f5f5;
+  border-radius: 1em;
+}
+textarea {
+  width: 40vw;
+  height: 100%;
+  border: none;
+  background-color: #f5f5f5;
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
+  padding: 1em;
 }
 </style>

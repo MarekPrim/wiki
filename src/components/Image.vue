@@ -5,9 +5,6 @@ defineProps({
   img: String
 })
 
-onMounted(() => {
-  alert("Image mounted");
-})
 
 </script>
 

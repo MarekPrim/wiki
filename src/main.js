@@ -1,5 +1,15 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from 'vue';
+import router from './router';
+import Markdown from 'vue3-markdown-it';
+import App from './App.vue';
+import { marked } from 'marked';
+import VueResource from 'vue-resource';
+const markedMixin = {
+  methods: {
+    md: function (input) {
+      return marked(input);
+    },
+  },
+};
 
-createApp(App).mount('#app')
+createApp(App).use(router).use(Markdown).mixin(markedMixin).mount('#app');
