@@ -12,7 +12,7 @@ import {onMounted, ref} from 'vue'
 					<a href="/"><img src='../../assets/logo.png' alt="logo"></a>
                     <p class="text-xs">Gracefully generated logo by <a href="https://openai.com/dall-e-2/">DALL-E AI</a>. Check out their work !</p>
 				</div>
-				<div class="navigation">
+				<div class="navigation ">
 					<ul>
 						<li><a href="#">Main page</a></li>
 						<li><a href="#">Contents</a></li>
@@ -23,7 +23,7 @@ import {onMounted, ref} from 'vue'
 			</div>
 			<div class="mainsection">
 				
-				<div class="article">
+				<div class="article border hover:contrast-more:bg-black">
 					<h1>Wikue</h1>
 					<p class="siteSub">From Wikue, the very expensive alternative to Wikipedia</p>
 

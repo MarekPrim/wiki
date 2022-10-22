@@ -6,6 +6,7 @@
 <script>
 import { marked } from 'marked';
 import Add from './Add.vue';
+
 export default {
   name: 'Markdown viewer',
   props: ['html', 'valid'],

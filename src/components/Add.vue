@@ -46,6 +46,7 @@ Write content here
           image: attributes.post_image,
           publish: attributes.publish,
         };
+        console.log(articleData);
         axios.post('http://localhost:4000/file', {
           name: this.$props.name,
           ...articleData,
