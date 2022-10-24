@@ -1,29 +1,30 @@
 const feathers = require('@feathersjs/feathers')
-const socketio = require('@feathersjs/socketio')
+const express = require('@feathersjs/express')
 const knex = require('knex')
 const knexService = require('feathers-knex')
-var morgan = require('morgan')
-const dbConfig = require(`./knexfile.js`)
+const socketio = require('@feathersjs/socketio')
+const cors = require('cors')
+const dbConfig = require('./knexfile.js')
 const database = knex(dbConfig.development)
 
-// Create a feathers instance
-const app = feathers()
 
-// Configure the Socket.io transport
+// Create a feathers instance.
+const app = express(feathers())
+    // Enable REST transport
+
+// Add cors middleware
+
 app.configure(socketio({
     path: '/gallery-socket-io',
 }))
 
-// Create a channel that will handle the transportation of all realtime events
-app.on('connection', connection => app.channel('everybody').join(connection))
+app.configure(express.rest())
 
-// Publish all realtime events to the `everybody` channel
-app.publish(() => app.channel('everybody'))
-
-
-// Feathers/Knex REST services
-app.use('pages', knexService({ Model: database, name: 'pages' }))
-
+// JSON body parser middleware
+app.use(express.json())
+app.use(cors())
+    // Feathers/Knex REST services
+app.use('/api/pages', knexService({ Model: database, name: 'pages' }))
 
 // Start the server on port 3030
-app.listen(4000, () => console.log('listening on port 4000'))
+app.listen(3030, () => console.log('listening on port 3030'))
