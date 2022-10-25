@@ -21,6 +21,7 @@
         "feathers-knex": "^8.0.1",
         "front-matter": "^4.0.2",
         "knex": "^2.3.0",
+        "lodash": "^4.17.21",
         "marked": "^4.1.1",
         "morgan": "^1.10.0",
         "socket.io-client": "^2.5.0",

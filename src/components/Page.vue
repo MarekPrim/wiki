@@ -9,7 +9,7 @@ const name = route.params.name;
 <template>
   <article class="bg-slate-50" id="view">
     <div class="article">
-      <Markdown :html="name" />
+      <Markdown :name="name" />
     </div>
   </article>
 </template>

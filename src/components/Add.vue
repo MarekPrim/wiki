@@ -47,9 +47,14 @@ Write content here
           publish: attributes.publish,
         };
         console.log(articleData);
-        axios.post('http://localhost:4000/file', {
-          name: this.$props.name,
-          ...articleData,
+        axios.post('http://localhost:3030/api/pages', {
+          id: this.$props.name,
+          author: articleData.title,
+          markdown : articleData.content
+        }).then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.log(error);
         });
       });
 
@@ -61,7 +66,7 @@ Write content here
 
 <template>
   <a>Add the {{ name }} page</a>
-  <div id="editor-form-container" class="uk-margin">
+  <div id="editor-form-container" class="uk-margin text-black">
     <div id="button-container">
       <button
         v-on:click="previewMarkdown = !previewMarkdown"
