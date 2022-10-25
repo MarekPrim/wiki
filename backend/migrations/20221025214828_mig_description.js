@@ -5,6 +5,7 @@ exports.up = function(knex) {
             table.string('id').unique().primary()
             table.text('markdown').notNullable()
             table.string('author')
+            table.string('description')
         })
 }
 

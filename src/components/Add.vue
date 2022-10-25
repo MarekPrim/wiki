@@ -3,7 +3,9 @@ import FrontMatter from 'front-matter';
 import { marked } from 'marked';
 import axios from 'axios';
 // import Vue from 'vue';
-
+marked.setOptions({
+        breaks: true
+})
 export default {
   name: 'AddPage',
   props: ['name'],
@@ -11,14 +13,20 @@ export default {
     return {
       previewMarkdown: false,
       startContent: `---
-title:
-short_description:
-tags:
-post_image:
-publish: false
+author: <your name>
+short_description: <your short description>
 ---
 
-Write content here
+# <your title>
+
+<your content>
+
+## Notes et références
+
+
+## Bibliographie
+
+
 `,
       allContent: '',
       articleData: '',
@@ -27,7 +35,11 @@ Write content here
   computed: {
     compiledMarkdown() {
       let data = FrontMatter(this.allContent);
-      return marked(data.body);
+      console.log("data_boyd", data.body);
+
+      let md = marked(data.body);
+      console.log("md", md);
+      return md;
     },
   },
   mounted() {
@@ -40,21 +52,25 @@ Write content here
       this.$nextTick(() => {
         let articleData = {
           content: body,
-          title: attributes.title,
+          author: attributes.author,
           description: attributes.short_description,
-          tags: attributes.tags,
-          image: attributes.post_image,
-          publish: attributes.publish,
         };
+        if(articleData.author=="<your name>" || articleData.description=="<your short description>"){
+          alert("Please fill the author and the description");
+          return;
+        }
         console.log(articleData);
         axios.post('http://localhost:3030/api/pages', {
           id: this.$props.name,
-          author: articleData.title,
-          markdown : articleData.content
+          author: articleData.author,
+          markdown : articleData.content,
+          description: articleData.description,
         }).then((response) => {
           console.log(response);
+          alert("La page à été ajoutée")
         }).catch((error) => {
           console.log(error);
+          alert("La page n'a pas été ajoutée")
         });
       });
 
@@ -65,8 +81,8 @@ Write content here
 </script>
 
 <template>
-  <a>Add the {{ name }} page</a>
-  <div id="editor-form-container" class="uk-margin text-black">
+  <a>Add the {{ name }} page with the editor below</a>
+  <div id="editor-form-container" class="flex-col align-middle justify-center p-6">
     <div id="button-container">
       <button
         v-on:click="previewMarkdown = !previewMarkdown"
@@ -75,17 +91,61 @@ Write content here
         {{ previewMarkdown ? 'Edit Article' : 'Preview Article' }}
       </button>
     </div>
-    <div id="editor-container">
+    <div id="editor-container" class="p-6">
       <textarea
         v-if="!previewMarkdown"
-        id="d1"
         v-model="allContent"
-        class="uk-textarea editor"
+        class="
+        lock p-2.5 w-full text-sm 
+        text-gray-900 bg-gray-50 rounded-lg border
+        border-gray-300 focus:ring-blue-500 
+        focus:border-blue-500 dark:bg-gray-700 
+        dark:border-gray-600 dark:placeholder-gray-400 
+        dark:text-white dark:focus:ring-blue-500 
+        dark:focus:border-blue-500"
+        id="markdown-editor"
       ></textarea>
-      <div v-else class="preview" v-html="compiledMarkdown"></div>
+      <div v-else class="preview my-6 mx-auto p-6 bg-slate-200 text-green-700 w-1/2" v-html="compiledMarkdown"></div>
     </div>
     <button v-on:click="postServer" class="uk-button uk-button-primary">
       Send this to the server
     </button>
   </div>
 </template>
+
+<style scoped>
+#editor-form-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#editor-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#markdown-editor {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>

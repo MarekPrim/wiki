@@ -2,30 +2,22 @@
 
 <template>
   <article class="bg-slate-900" id="view">
-    <li v-for="page of data" :key="page.id">
-      <p class="text-green-700">{{ page.id }}</p>
+    <li v-for="page of data" :key="page.id"
+      @mouseover="hover=page.id"
+      @mouseleave="hover=false"
+      class="flex flex-col justify-center items-center p-4 m-4 bg-slate-50 rounded-lg shadow-lg"
+    >
+      <a
+      :href="'/page/' + page.id"
+      class="text-green-700"
+      >
+        {{ page.id }}
+    </a>
+      <span v-if="hover==page.id" class="text-black font-light text-base">{{page.description}}</span>
     </li>
   </article>
 </template>
-<style scoped>
-#view {
-  width: 75vw;
-  height: 80vh;
-  margin: auto;
-  padding: 1em;
-  border-radius: 1em;
-}
-textarea {
-  width: 40vw;
-  height: 100%;
-  border: none;
-  background-color: #f5f5f5;
-  resize: none;
-  font-family: "Roboto", sans-serif;
-  font-size: 1.2em;
-  padding: 1em;
-}
-</style>
+
 
 <script>
 import feathers from "@feathersjs/client";
@@ -35,7 +27,13 @@ export default {
   data() {
     return {
       data: false,
+      hover: false,
     };
+  },
+  watch:{
+    hover: function(){
+      console.log("hover", this.hover);
+    }
   },
   mounted() {
     const app = feathers();
@@ -51,3 +49,23 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#view {
+  width: 75vw;
+  height: 100vh;
+  margin: auto;
+  padding: 1em;
+  border-radius: 1em;
+}
+textarea {
+  width: 40vw;
+  height: 100%;
+  border: none;
+  background-color: #f5f5f5;
+  resize: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2em;
+  padding: 1em;
+}
+</style>
