@@ -2,6 +2,15 @@
 import FrontMatter from 'front-matter';
 import { marked } from 'marked';
 import axios from 'axios';
+import feathers from '@feathersjs/client'
+import io from 'socket.io-client'
+
+const app = feathers();
+    const socket = io("http://localhost:3030",{
+        path: '/gallery-socket-io',
+        transports: ["websocket"], // mandatory with Vite
+    })
+    app.configure(feathers.socketio(socket))
 // import Vue from 'vue';
 marked.setOptions({
         breaks: true
@@ -60,18 +69,35 @@ short_description: <your short description>
           return;
         }
         console.log(articleData);
-        axios.post('http://localhost:3030/api/pages', {
+        // axios.post('http://localhost:3030/api/pages', {
+        //   id: this.$props.name,
+        //   author: articleData.author,
+        //   markdown : articleData.content,
+        //   description: articleData.description,
+        // }).then((response) => {
+        //   console.log(response);
+        //   alert("La page à été ajoutée")
+        // }).catch((error) => {
+        //   console.log(error);
+        //   alert("La page n'a pas été ajoutée")
+        // });
+        // app.service('/api/pages').create({
+        //   id: this.$props.name,
+        //   author: articleData.author,
+        //   markdown : articleData.content,
+        //   description: articleData.description,
+        // });
+
+        socket.emit('create', '/api/pages', {
           id: this.$props.name,
           author: articleData.author,
           markdown : articleData.content,
           description: articleData.description,
-        }).then((response) => {
-          console.log(response);
-          alert("La page à été ajoutée")
-        }).catch((error) => {
-          console.log(error);
-          alert("La page n'a pas été ajoutée")
-        });
+}, (error, message) => {
+  console.log('Todo created', message);
+  console.error(error);
+});
+
       });
 
       // Then proceed to using articleData object as needed

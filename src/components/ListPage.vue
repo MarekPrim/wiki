@@ -30,11 +30,6 @@ export default {
       hover: false,
     };
   },
-  watch:{
-    hover: function(){
-      console.log("hover", this.hover);
-    }
-  },
   mounted() {
     const app = feathers();
     const socket = io("http://localhost:3030",{
@@ -46,6 +41,11 @@ export default {
         this.data = usersList;
         console.log(this.data);
     })
+    app.service('/api/pages')
+      .on('created', message => {
+        console.log('New message created', message);
+        this.data.push(message);
+      });
   }
 };
 </script>
