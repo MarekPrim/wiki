@@ -9,6 +9,7 @@ const name = route.params.name;
 <template>
   <article class="bg-slate-50" id="view">
     <div class="article">
+      <a :href="'/edit/' + name" class="text-left">Edit</a>
       <Markdown :name="name" />
     </div>
   </article>

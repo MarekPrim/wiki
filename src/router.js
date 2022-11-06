@@ -27,6 +27,13 @@ const router = createRouter({
             component: () =>
                 import ('./components/Add.vue'),
         },
+        {
+            path: '/edit/:name',
+            name: 'edit',
+            component: () =>
+                import ('./components/Edit.vue'),
+        },
+
     ],
 });
 export default router;
