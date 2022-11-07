@@ -136,7 +136,6 @@ ${usersList[0].markdown}
 </script>
 
 <template>
-  <a>Add the {{ name }} page with the editor below</a>
   <div id="editor-form-container" class="flex-col align-middle justify-center p-6">
     <div id="button-container">
       <button
@@ -146,7 +145,9 @@ ${usersList[0].markdown}
         {{ previewMarkdown ? 'Edit Article' : 'Preview Article' }}
       </button>
     </div>
-    <div id="editor-container" class="p-6">
+    <article class="bg-slate-50" id="view">
+    <div class="article">
+      <div id="editor-container" class="p-6">
       <textarea
         v-if="!previewMarkdown"
         v-model="allContent"
@@ -162,6 +163,9 @@ ${usersList[0].markdown}
       ></textarea>
       <div v-else class="preview my-6 mx-auto p-6 bg-slate-200 text-green-700 w-1/2" v-html="compiledMarkdown"></div>
     </div>
+    </div>
+  </article>
+    
     <button v-on:click="patchServer" class="uk-button uk-button-primary">
       Send this to the server
     </button>
@@ -202,5 +206,13 @@ ${usersList[0].markdown}
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+#view {
+  width: 75vw;
+  height: 80vh;
+  margin: auto;
+  padding: 1em;
+  background-color: #f5f5f5;
+  border-radius: 1em;
 }
 </style>

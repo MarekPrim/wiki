@@ -53,7 +53,7 @@ export default {
 <style scoped>
 #view {
   width: 75vw;
-  height: 100vh;
+  height: min-content;
   margin: auto;
   padding: 1em;
   border-radius: 1em;
