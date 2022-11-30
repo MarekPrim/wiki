@@ -111,21 +111,29 @@ ${usersList[0].markdown}
         console.log(location.pathname);
         const name = location.pathname.split("/").pop();
         console.log(name);
-        socket.emit('patch', '/api/pages',  
-        name,{
+        app.service('/api/pages').patch(name, {
             author: articleData.author,
             markdown : articleData.content,
             description: articleData.description,
-          }
-, (error, message) => {
-  console.log('Todo created', message);
-  if(error){
-    console.error(error);
-  } else {
-    location.assign(`http://localhost:3000/page/${name}`);
-  }
+          }, null);
+        app.service("/api/pages").emit("patched", articleData);
+          
+//         socket.emit('patch', '/api/pages',  
+//         name,{
+//             author: articleData.author,
+//             markdown : articleData.content,
+//             description: articleData.description,
+//           }
+// , (error, message) => {
+//   console.log('Todo created', message);
+//   if(error){
+//     console.error(error);
+//   } else {
+//     console.log(message);
+//     //location.assign(`http://localhost:3000/page/${name}`);
+//   }
   
-});
+// });
 
       });
 

@@ -54,7 +54,14 @@ export default {
       path: "/gallery-socket-io",
       transports: ["websocket"], // mandatory with Vite
     });
+    
     app.configure(feathers.socketio(socket));
+    app.service("/api/pages").on("patch", (data) => {
+      console.log("patch", data);
+    });
+    app.service("/api/pages").on("patched", (data) => {
+      console.log("created", data);
+    });
     app
       .service("/api/pages")
       .find({

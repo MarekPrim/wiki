@@ -107,6 +107,7 @@ short_description: <your short description>
 </script>
 
 <template>
+  <div>
   <a>Add the {{ name }} page with the editor below</a>
   <div id="editor-form-container" class="flex-col align-middle justify-center p-6">
     <div id="button-container">
@@ -137,6 +138,7 @@ short_description: <your short description>
       Send this to the server
     </button>
   </div>
+</div>
 </template>
 
 <style scoped>
