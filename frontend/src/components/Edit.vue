@@ -192,7 +192,7 @@ ${usersList[0].markdown}
 
 #markdown-editor {
   width: 100%;
-  height: 50vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -200,7 +200,7 @@ ${usersList[0].markdown}
 }
 #view {
   width: 75vw;
-  height: 80vh;
+  height: max-content;
   margin: auto;
   padding: 1em;
   background-color: #f5f5f5;

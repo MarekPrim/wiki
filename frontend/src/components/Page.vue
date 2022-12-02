@@ -20,7 +20,7 @@ const name = route.params.name;
 <style scoped>
 #view {
   width: 75vw;
-  height: 80vh;
+  height: fit-content;
   margin: auto;
   padding: 1em;
   background-color: #f5f5f5;
