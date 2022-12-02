@@ -5,6 +5,7 @@ import axios from 'axios';
 import feathers from '@feathersjs/client'
 import io from 'socket.io-client'
 import { useRoute } from 'vue-router';
+import Sidebar from './landing/Sidebar.vue';
 const app = feathers();
     const socket = io("http://localhost:3030",{
         path: '/gallery-socket-io',
@@ -16,15 +17,15 @@ marked.setOptions({
         breaks: true
 })
 export default {
-  name: 'EditPage',
-  data: function () {
-    return {
-        html: "loading... (2)",
-      author: "",
-      description : "",
-      valid: true,
-      previewMarkdown: false,
-      startContent: `---
+    name: "EditPage",
+    data: function () {
+        return {
+            html: "loading... (2)",
+            author: "",
+            description: "",
+            valid: true,
+            previewMarkdown: false,
+            startContent: `---
 author: <your name>
 short_description: <your short description>
 ---
@@ -40,46 +41,45 @@ short_description: <your short description>
 
 
 `,
-      allContent: '',
-      articleData: '',
-    };
-  },
-  computed: {
-    compiledMarkdown() {
-      let data = FrontMatter(this.allContent);
-      console.log("data_boyd", data.body);
-
-      let md = marked(data.body);
-      console.log("md", md);
-      return md;
+            allContent: "",
+            articleData: "",
+        };
     },
-  },
-  mounted() {
-    this.allContent = this.startContent;
-    this.previewMarkdown = false;
-    const app = feathers();
-    const socket = io("http://localhost:3030", {
-      path: "/gallery-socket-io",
-      transports: ["websocket"], // mandatory with Vite
-    });
-    app.configure(feathers.socketio(socket));
-    console.log(this.$props.name)
-    const route = useRoute();
-    const name = route.params.name;
-    console.log(name)
-    app
-      .service("/api/pages")
-      .find({
-        query: {
-          id: name,
+    computed: {
+        compiledMarkdown() {
+            let data = FrontMatter(this.allContent);
+            console.log("data_boyd", data.body);
+            let md = marked(data.body);
+            console.log("md", md);
+            return md;
         },
-      })
-      .then((usersList) => {
-        this.html = marked(usersList[0].markdown);
-        this.author = usersList[0].author;
-        this.description = usersList[0].description;
-        this.valid = true;
-        this.allContent = `---
+    },
+    mounted() {
+        this.allContent = this.startContent;
+        this.previewMarkdown = false;
+        const app = feathers();
+        const socket = io("http://localhost:3030", {
+            path: "/gallery-socket-io",
+            transports: ["websocket"], // mandatory with Vite
+        });
+        app.configure(feathers.socketio(socket));
+        console.log(this.$props.name);
+        const route = useRoute();
+        const name = route.params.name;
+        console.log(name);
+        app
+            .service("/api/pages")
+            .find({
+            query: {
+                id: name,
+            },
+        })
+            .then((usersList) => {
+            this.html = marked(usersList[0].markdown);
+            this.author = usersList[0].author;
+            this.description = usersList[0].description;
+            this.valid = true;
+            this.allContent = `---
 author: ${usersList[0].author}
 short_description: ${usersList[0].description}
 ---
@@ -88,58 +88,40 @@ ${usersList[0].markdown}
 
 
 `;
-      })
-      .catch((err) => {
-        this.html = "Page not found";
-        this.valid = false;
-      });
-  },
-  methods: {
-    patchServer() {
-      const { body, attributes } = FrontMatter(this.allContent);
-      this.$nextTick(() => {
-        let articleData = {
-          content: body,
-          author: attributes.author,
-          description: attributes.short_description,
-        };
-        if(articleData.author=="<your name>" || articleData.description=="<your short description>"){
-          alert("Please fill the author and the description");
-          return;
-        }
-        console.log(articleData);
-        console.log(location.pathname);
-        const name = location.pathname.split("/").pop();
-        console.log(name);
-        app.service('/api/pages').patch(name, {
-            author: articleData.author,
-            markdown : articleData.content,
-            description: articleData.description,
-          }, null);
-        app.service("/api/pages").emit("patched", articleData);
-          
-//         socket.emit('patch', '/api/pages',  
-//         name,{
-//             author: articleData.author,
-//             markdown : articleData.content,
-//             description: articleData.description,
-//           }
-// , (error, message) => {
-//   console.log('Todo created', message);
-//   if(error){
-//     console.error(error);
-//   } else {
-//     console.log(message);
-//     //location.assign(`http://localhost:3000/page/${name}`);
-//   }
-  
-// });
-
-      });
-
-      // Then proceed to using articleData object as needed
+        })
+            .catch((err) => {
+            this.html = "Page not found";
+            this.valid = false;
+        });
     },
-  },
+    methods: {
+        patchServer() {
+            const { body, attributes } = FrontMatter(this.allContent);
+            this.$nextTick(() => {
+                let articleData = {
+                    content: body,
+                    author: attributes.author,
+                    description: attributes.short_description,
+                };
+                if (articleData.author == "<your name>" || articleData.description == "<your short description>") {
+                    alert("Please fill the author and the description");
+                    return;
+                }
+                console.log(articleData);
+                console.log(location.pathname);
+                const name = location.pathname.split("/").pop();
+                console.log(name);
+                app.service("/api/pages").patch(name, {
+                    author: articleData.author,
+                    markdown: articleData.content,
+                    description: articleData.description,
+                }, null);
+                app.service("/api/pages").emit("patch", articleData);
+            });
+            // Then proceed to using articleData object as needed
+        },
+    },
+    components: { Sidebar }
 };
 </script>
 
@@ -154,6 +136,7 @@ ${usersList[0].markdown}
       </button>
     </div>
     <article class="bg-slate-50" id="view">
+      <Sidebar/>
     <div class="article">
       <div id="editor-container" class="p-6">
       <textarea

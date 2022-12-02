@@ -1,5 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router';
+import Sidebar from './landing/Sidebar.vue';
 import Markdown from './Markdown.vue';
 // import Markdown from "./Markdown.vue"
 const route = useRoute();
@@ -8,20 +9,7 @@ const name = route.params.name;
 
 <template>
   <div>
-    <div class="sidebar bg-slate-300 text-black">
-				<div class="logo">
-					<a href="/"><img src='../../assets/logo.png' alt="logo"></a>
-                    <p class="text-xs">Gracefully generated logo by <a href="https://openai.com/dall-e-2/">DALL-E AI</a>. Check out their work !</p>
-				</div>
-				<div class="navigation ">
-					<ul>
-						<li><a href="pages">Main page</a></li>
-						<li><a href="#">Contents</a></li>
-					</ul>
-				</div>
-
-			
-			</div>
+    <Sidebar />
   <article class="bg-slate-50" id="view">
     <div class="article">
       <a :href="'/edit/' + name" class="text-left">Edit</a>

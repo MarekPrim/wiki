@@ -69,25 +69,6 @@ short_description: <your short description>
           return;
         }
         console.log(articleData);
-        // axios.post('http://localhost:3030/api/pages', {
-        //   id: this.$props.name,
-        //   author: articleData.author,
-        //   markdown : articleData.content,
-        //   description: articleData.description,
-        // }).then((response) => {
-        //   console.log(response);
-        //   alert("La page à été ajoutée")
-        // }).catch((error) => {
-        //   console.log(error);
-        //   alert("La page n'a pas été ajoutée")
-        // });
-        // app.service('/api/pages').create({
-        //   id: this.$props.name,
-        //   author: articleData.author,
-        //   markdown : articleData.content,
-        //   description: articleData.description,
-        // });
-
         socket.emit('create', '/api/pages', {
           id: this.$props.name,
           author: articleData.author,
