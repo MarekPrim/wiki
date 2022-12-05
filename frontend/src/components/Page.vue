@@ -1,23 +1,28 @@
 <script setup>
 import { useRoute } from 'vue-router';
+import Sidebar from './landing/Sidebar.vue';
 import Markdown from './Markdown.vue';
-// import Markdown from "./Markdown.vue"
 const route = useRoute();
 const name = route.params.name;
 </script>
 
 <template>
-  <article class="bg-slate-50" id="view">
-    <div class="article">
-      <a :href="'/edit/' + name" class="text-left">Edit</a>
-      <Markdown :name="name" />
-    </div>
-  </article>
+  <div>
+    <Sidebar />
+    <article class="bg-slate-50" id="view">
+      <div class="article">
+        <a :href="'/edit/' + name" class="text-left no-print"
+          >Passage au mode édition</a
+        >
+        <Markdown :name="name" />
+      </div>
+    </article>
+  </div>
 </template>
 <style scoped>
 #view {
   width: 75vw;
-  height: 80vh;
+  height: fit-content;
   margin: auto;
   padding: 1em;
   background-color: #f5f5f5;

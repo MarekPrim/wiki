@@ -1,27 +1,27 @@
 <script>
 import FrontMatter from 'front-matter';
 import { marked } from 'marked';
-import axios from 'axios';
-import feathers from '@feathersjs/client'
-import io from 'socket.io-client'
+import feathers from '@feathersjs/client';
+import io from 'socket.io-client';
 import { useRoute } from 'vue-router';
+import Sidebar from './landing/Sidebar.vue';
 const app = feathers();
-    const socket = io("http://localhost:3030",{
-        path: '/gallery-socket-io',
-        transports: ["websocket"], // mandatory with Vite
-    })
-    app.configure(feathers.socketio(socket))
+const socket = io('http://localhost:3030', {
+  path: '/gallery-socket-io',
+  transports: ['websocket'], // mandatory with Vite
+});
+app.configure(feathers.socketio(socket));
 // import Vue from 'vue';
 marked.setOptions({
-        breaks: true
-})
+  breaks: true,
+});
 export default {
   name: 'EditPage',
   data: function () {
     return {
-        html: "loading... (2)",
-      author: "",
-      description : "",
+      html: 'loading... (2)',
+      author: '',
+      description: '',
       valid: true,
       previewMarkdown: false,
       startContent: `---
@@ -47,10 +47,9 @@ short_description: <your short description>
   computed: {
     compiledMarkdown() {
       let data = FrontMatter(this.allContent);
-      console.log("data_boyd", data.body);
-
+      console.log('data_boyd', data.body);
       let md = marked(data.body);
-      console.log("md", md);
+      console.log('md', md);
       return md;
     },
   },
@@ -58,17 +57,17 @@ short_description: <your short description>
     this.allContent = this.startContent;
     this.previewMarkdown = false;
     const app = feathers();
-    const socket = io("http://localhost:3030", {
-      path: "/gallery-socket-io",
-      transports: ["websocket"], // mandatory with Vite
+    const socket = io('http://localhost:3030', {
+      path: '/gallery-socket-io',
+      transports: ['websocket'], // mandatory with Vite
     });
     app.configure(feathers.socketio(socket));
-    console.log(this.$props.name)
+    console.log(this.$props.name);
     const route = useRoute();
     const name = route.params.name;
-    console.log(name)
+    console.log(name);
     app
-      .service("/api/pages")
+      .service('/api/pages')
       .find({
         query: {
           id: name,
@@ -90,7 +89,7 @@ ${usersList[0].markdown}
 `;
       })
       .catch((err) => {
-        this.html = "Page not found";
+        this.html = 'Page not found';
         this.valid = false;
       });
   },
@@ -103,41 +102,40 @@ ${usersList[0].markdown}
           author: attributes.author,
           description: attributes.short_description,
         };
-        if(articleData.author=="<your name>" || articleData.description=="<your short description>"){
-          alert("Please fill the author and the description");
+        if (
+          articleData.author == '<your name>' ||
+          articleData.description == '<your short description>'
+        ) {
+          alert('Please fill the author and the description');
           return;
         }
         console.log(articleData);
         console.log(location.pathname);
-        const name = location.pathname.split("/").pop();
+        const name = location.pathname.split('/').pop();
         console.log(name);
-        socket.emit('patch', '/api/pages',  
-        name,{
+        app.service('/api/pages').patch(
+          name,
+          {
             author: articleData.author,
-            markdown : articleData.content,
+            markdown: articleData.content,
             description: articleData.description,
-          }
-, (error, message) => {
-  console.log('Todo created', message);
-  if(error){
-    console.error(error);
-  } else {
-    location.assign(`http://localhost:3000/page/${name}`);
-  }
-  
-});
-
+          },
+          null
+        );
+        app.service('/api/pages').emit('patch', articleData);
       });
-
-      // Then proceed to using articleData object as needed
     },
   },
+  components: { Sidebar },
 };
 </script>
 
 <template>
-  <div id="editor-form-container" class="flex-col align-middle justify-center p-6">
-    <div id="button-container">
+  <div
+    id="editor-form-container"
+    class="flex-col align-middle justify-center p-6"
+  >
+    <div id="button-container" class="no-print">
       <button
         v-on:click="previewMarkdown = !previewMarkdown"
         class="uk-button uk-button-primary uk-float-left"
@@ -146,28 +144,29 @@ ${usersList[0].markdown}
       </button>
     </div>
     <article class="bg-slate-50" id="view">
-    <div class="article">
-      <div id="editor-container" class="p-6">
-      <textarea
-        v-if="!previewMarkdown"
-        v-model="allContent"
-        class="
-        lock p-2.5 w-full text-sm 
-        text-gray-900 bg-gray-50 rounded-lg border
-        border-gray-300 focus:ring-blue-500 
-        focus:border-blue-500 dark:bg-gray-700 
-        dark:border-gray-600 dark:placeholder-gray-400 
-        dark:text-white dark:focus:ring-blue-500 
-        dark:focus:border-blue-500"
-        id="markdown-editor"
-      ></textarea>
-      <div v-else class="preview my-6 mx-auto p-6 bg-slate-200 text-green-700 w-1/2" v-html="compiledMarkdown"></div>
-    </div>
-    </div>
-  </article>
-    
-    <button v-on:click="patchServer" class="uk-button uk-button-primary">
-      Send this to the server
+      <Sidebar />
+      <div class="article">
+        <div id="editor-container" class="p-6">
+          <textarea
+            v-if="!previewMarkdown"
+            v-model="allContent"
+            class="lock p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="markdown-editor"
+          ></textarea>
+          <div
+            v-else
+            class="preview my-6 mx-auto p-6 bg-slate-200 text-green-700 w-1/2"
+            v-html="compiledMarkdown"
+          ></div>
+        </div>
+      </div>
+    </article>
+
+    <button
+      v-on:click="patchServer"
+      class="uk-button uk-button-primary no-print"
+    >
+      Ajouter cette page sur Wikue
     </button>
   </div>
 </template>
@@ -201,7 +200,7 @@ ${usersList[0].markdown}
 
 #markdown-editor {
   width: 100%;
-  height: 50vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -209,7 +208,7 @@ ${usersList[0].markdown}
 }
 #view {
   width: 75vw;
-  height: 80vh;
+  height: max-content;
   margin: auto;
   padding: 1em;
   background-color: #f5f5f5;
