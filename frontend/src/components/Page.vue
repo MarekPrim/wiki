@@ -2,7 +2,6 @@
 import { useRoute } from 'vue-router';
 import Sidebar from './landing/Sidebar.vue';
 import Markdown from './Markdown.vue';
-// import Markdown from "./Markdown.vue"
 const route = useRoute();
 const name = route.params.name;
 </script>
@@ -10,12 +9,15 @@ const name = route.params.name;
 <template>
   <div>
     <Sidebar />
-  <article class="bg-slate-50" id="view">
-    <div class="article">
-      <a :href="'/edit/' + name" class="text-left">Edit</a>
-      <Markdown :name="name" />
-    </div>
-  </article></div>
+    <article class="bg-slate-50" id="view">
+      <div class="article">
+        <a :href="'/edit/' + name" class="text-left no-print"
+          >Passage au mode édition</a
+        >
+        <Markdown :name="name" />
+      </div>
+    </article>
+  </div>
 </template>
 <style scoped>
 #view {
