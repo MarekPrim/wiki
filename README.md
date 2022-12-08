@@ -39,6 +39,10 @@ After the dependencies have been installed, you can start the Wukie development 
 cd backend
 nodemon app.cjs
 ```
+```
+cd frontend
+npm run dev
+```
 This will start a local development server  at http://localhost:3030. 
 
 Wukie includes the following features:
