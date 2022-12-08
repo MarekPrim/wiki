@@ -11,9 +11,6 @@ const name = route.params.name;
     <Sidebar />
     <article class="bg-slate-50" id="view">
       <div class="article">
-        <a :href="'/edit/' + name" class="text-left no-print"
-          >Passage au mode édition</a
-        >
         <Markdown :name="name" />
       </div>
     </article>

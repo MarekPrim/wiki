@@ -11,9 +11,15 @@ const socket = io('http://localhost:3030', {
   transports: ['websocket'], // mandatory with Vite
 });
 app.configure(feathers.socketio(socket));
+import hljs from 'highlight.js';
 // import Vue from 'vue';
 marked.setOptions({
   breaks: true,
+  highlight: function(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+    return hljs.highlight(code, { language }).value;
+  },
+  langPrefix: 'hljs language-', // highlight.js css expects a top-level 'hljs' class.
 });
 export default {
   name: 'EditPage',
@@ -123,6 +129,7 @@ ${usersList[0].markdown}
           null
         );
         app.service('/api/pages').emit('patch', articleData);
+        location.assign('/page/' + name);
       });
     },
   },

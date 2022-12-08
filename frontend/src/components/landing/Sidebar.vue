@@ -26,6 +26,8 @@ defineProps({
 <style scoped>
 .sidebar {
   position: fixed;
+  width:min-content;
+  height: 45vh;
   top: 30%;
   left: 1%;
 }

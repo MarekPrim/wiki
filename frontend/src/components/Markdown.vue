@@ -2,6 +2,9 @@
   <div>
     <div>
       <div class="flex flex-row justify-around items-center text-black">
+        <a v-if="!valid" :href="'/edit/' + name" class="text-left no-print"
+          >Passage au mode édition</a
+        >
         <p class="text-3xl font-bold">
           {{ name }}
         </p>
@@ -34,8 +37,14 @@ import { marked } from "marked";
 import Add from "./Add.vue";
 import feathers from "@feathersjs/client";
 import io from "socket.io-client";
+import hljs from "highlight.js";
 marked.setOptions({
   breaks: true,
+  highlight: function(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'java';
+    return hljs.highlight(code, { language }).value;
+  },
+  langPrefix: 'hljs language-', 
 });
 export default {
   name: "Markdown viewer",

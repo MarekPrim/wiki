@@ -81,8 +81,16 @@ short_description: <your short description>
             description: articleData.description,
           },
           (error, message) => {
-            console.log('Todo created', message);
-            console.error(error);
+            if (error) {
+              console.log('error', error);
+              //return;
+            } else {
+              console.log('Page created', message);
+              location.assign('/page/' + this.$props.name);
+            }
+            
+
+            
           }
         );
       });
