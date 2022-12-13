@@ -39,8 +39,8 @@ After the dependencies have been installed, you can start the Wukie development 
 cd backend
 nodemon app.cjs
 ```
-To launch the frontend from the wiki directory :
 
+To launch the frontend from the wiki directory :
 ```
 cd frontend
 npm run dev
