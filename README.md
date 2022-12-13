@@ -34,10 +34,16 @@ npm i
 cd ../backend
 npm i
 ```
-After the dependencies have been installed, you can start the Wukie development server by running the following command:
+After the dependencies have been installed, you can start the Wukie development server by running the following command from the wiki directory to launch the backend server :
 ```
 cd backend
 nodemon app.cjs
+```
+To launch the frontend from the wiki directory :
+
+```
+cd frontend
+npm run dev
 ```
 This will start a local development server  at http://localhost:3030. 
 
