@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="flex flex-row justify-around items-center text-black">
-        <a v-if="!valid" :href="'/edit/' + name" class="text-left no-print"
+        <a v-if="valid" :href="'/edit/' + name" class="text-left no-print"
           >Passage au mode édition</a
         >
         <p class="text-3xl font-bold">
